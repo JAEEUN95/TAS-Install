@@ -4,14 +4,6 @@
 
 #### VMware Tanzu Application Service
 
-#### VM용 TAS 리소스 요구사항
-
-- 일반적인 요구사항
-
-
-
-
-
 #### VM용 TAS 구성
 
 **전제 조건**
@@ -20,15 +12,11 @@
 
 - Ops Manager에 맞게 환경을 준비하고 BOSH Director를 설치 및 구성하는 단계를 성공적으로 완료했는지 확인하십시오.
 
-
-
 **Ops Manager에 VM용 TAS 추가**
 
 VM용 TAS를 구성하려면 먼저 Ops Manager 설치 대시보드에 VM용 TAS 타일을 추가해야합니다.
 
 IMPORT A PRODUCT 버튼을 클릭하여 Ops Manager에 추가합니다.
-
-
 
 - **Assign AZs and Networks**
 
@@ -42,8 +30,6 @@ IMPORT A PRODUCT 버튼을 클릭하여 Ops Manager에 추가합니다.
 
 ##### 모든 설정 입력 후 Save를 클릭합니다.
 
-
-
 - **Domains**
 
 ![](domains01.png)
@@ -52,11 +38,7 @@ IMPORT A PRODUCT 버튼을 클릭하여 Ops Manager에 추가합니다.
 
 2. **Apps domain**: Apps 도메인으로 사용할 주소를 입력합니다. ex. apps.ds.lab
 
-
-
 ##### 모든 설정 입력 후 Save를 클릭합니다.
-
-
 
 - **Networking**
 
@@ -66,13 +48,9 @@ IMPORT A PRODUCT 버튼을 클릭하여 Ops Manager에 추가합니다.
 
 ※ *Note:  Gorouter IP 또는 HAProxy IP 필드에서 특정 IP 주소를 할당하도록 선택한 경우 이러한 IP 주소가 Ops Manager에서 VM용 TAS에 대해 구성한 서브넷에  있는지 확인하십시오.*
 
-| HAProxy 사용여부 | Gorouter IP 필드                                                                                                                                                                                   | HAProxy IP 필드                                                                                                                                                    |
-| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| NO           | Ops Manager에서 구성한 서브넷에서 IP 주소를 선택합니다.
-Gorouter IP 필드 에 이러한 IP 주소를 입력합니다 . 고가용성을 위해 둘 이상의 IP 주소를 지정해야 합니다. IP 주소는 서브넷 CIDR 블록 내에 있어야 합니다. 배치를 위해 구성한 도메인에 대한 요청을 이러한 IP 주소로 전달하도록 로드 밸런서를 구성하십시오. | 공백                                                                                                                                                               |
-| YES          | 공백                                                                                                                                                                                               | Ops Manager에서 구성한 서브넷에서 IP 주소를 선택합니다.
-HAProxy IP 필드 에 이러한 IP 주소를 입력합니다 . 고가용성을 위해 둘 이상의 IP 주소를 지정해야 합니다.
-배치를 위해 구성한 도메인에 대한 요청을 이러한 IP 주소로 전달하도록 로드 밸런서를 구성하십시오. |
+| HAProxy 사용여부 | Gorouter IP 필드 | HAProxy IP 필드 |
+| ------------ | -------------- | ------------- |
+|              |                |               |
 
 2. (선택) **SSH Proxy IPs 및 TCP router IPs** : SSH Proxy 포트 2222의 앱 컨테이너에 대한 SSH 요청을 수락하는 Diego Brain IP 주소를 추가합니다. TCP router에 할당하려는 IP 주소를 추가합니다. 이 창 하단에서 이 기능을 활성화 합니다. 
 
@@ -167,6 +145,186 @@ HAProxy IP 필드 에 이러한 IP 주소를 입력합니다 . 고가용성을 �
 30. (선택)**Load balancer healthy threshold** : 이 필드는 Gorouter 인스턴스가 시작되었다고 선언할 때 까지 대기하는 시간을 초 단위로 지정합니다. 
 
 31. (선택)**HTTP headers to log** : 개발자가 HTTP 요청의 특정 HTTP 헤더를 Gorouter의 정보와 함께 앱 로그에 표시하려는 경우 기록합니다.
+
+32. **HAProxy request maximum buffer size** : 기본 최대값인 16.384KB보다 큰 요청이 예상되는 경우 HAProxy 요청 최대 버퍼 크기에 새 값(바이트)을 입력하십시오.
+
+33. TAS에 HAProxy를 사용하고 특정 소스에만 트래픽을 수신하도록 하려면 다음 필드를 구성합니다.
+    
+    - **HAProxy protected domains** : 알 수 없는 소스 요청으로부터 보호하기 위해 쉼표로 구분된 도메인 목록을 입력합니다. 
+    
+    - **HAProxy trusted CIDRs** : 공백으로 구분된 CIDR 목록을 입력하여 보호된 도메인의 IP 주소가 TAS로 트래픽을 보낼 수 있도록 제한합니다.
+
+34. **Loggregator port** : 공백으로 비어있다면 443으로 설정됩니다. 
+
+35. **Container network interface plugin** : 다음 옵션 중 하나를 선택합니다.
+    
+    - Silk : 이 옵션은 TAS의 기본 컨테이너 네트워크 인터페이스(CNI)입니다.
+      
+      - App network maximum transmission unit : MTU 값을 바이트 단위로 입력합니다. 기본값은 1454 입니다.
+      
+      - (선택)Overlay subnet : 오버레이 네트워크 IP 범위를 입력합니다. 범위를 설정하지 않으면 10.255.0.0/16 입니다.
+      
+      - VXLAN tunnel endpoint port : UDP 포트 번호를 입력합니다. VXLAN패킷을 수신하는 호스트 포트입니다. 사용자 지정 설정하지 않으면 4789를 사용합니다.
+      
+      - Denied logging interval : 컨테이너별 네트워킹 정책 또는 ORG, SPACE 또는 배포에 적용되는 ASG(App Security Group) 규칙에 의해 차단된 패킷에 대한 초당 속도 제한을 설정합니다. 이 필드의 기본값은 1입니다.
+      
+      - UDP logging interval : 전송 및 수신되는 UDP 패킷에 대한 초당 속도 제한을 설정합니다. 이 필드의 기본값은 100 입니다. 
+      
+      - Log traffic for all accepted and denied app packets : 앱 트래픽에 대한 로깅을 활성화하려면 확인란을 활성화 합니다. 선택 시 로그양이 증가합니다.
+      
+      - Enable Silk network policy enforcement : 앱 간의 Silk 네트워크 정책 적용을 비활성화 하려면 확인란을 해제합니다. 기본적으로 선택되어 있습니다. 이 기능을 비활성화하면 모든 앱 컨테이너가 제한 없이 다른 모든 앱 컨테이너를 액세스할 수 있습니다.
+      
+      - Enable dynamic application security group changes : 컨테이너 재시작 없이 ASG를 앱에 적용할 수 있습니다. 
+    
+    - External : VMware NSX-T Container Plug-in을 배포하는 경우에 선택합니다.
+
+36. **DNS search domains** : DNS 검색 도메인으로 사용할 앱 컨테이너의 도메인을 입력합니다.
+
+37. **Database connection timeout** : 정책 서버 및 Silk 데이터베이스의 클라이언트에 대한 연결 제한 시간을 초 단위로 설정합니다. 기본값은 120입니다. 배포에서 컨테이너 간 네트워킹과 관련된 시간 초과 문제가 발생하는 경우 이 값을 늘려야 할 수 있습니다.
+
+38. **TCP routing** : TCP 라우팅은 기본적으로 비활성화되어 있습니다. DNS가 TCP 라우터에 직접 전달되지 않고 로드 밸런서를 통해 TCP 트래픽을 보내는 경우 이 기능을 활성화해야 합니다.
+
+39. (선택)**Remove specified HTTP response headers** : Gorouter가 앱 응답에서 제거할 헤더를 입력합니다.
+
+40. (선택)**Sticky session cookies** : 하나 이상의 고정 세션 쿠키 이름을 입력합니다. 기본 쿠키 이름은 JSESSIONID 입니다. 일부 앱에는 다른 쿠키 이름이 필요합니다. 예를 들어 Spring WebFlux에는 SESSION 이름이 필요합니다. Gorouter는 이러한 쿠키를 사용하여 세션 선호도 또는 고정 세션을 지원합니다.
+
+
+
+##### 모든 설정 입력 후 Save를 클릭합니다.
+
+
+
+- **App Containers**
+
+![](appcontainers01.png)
+
+1. **Enable custom buildpacks** : cf push -b 명령 옵션 사용자 지정 빌드팩 URL을 전달하는 기능을 제어합니다. 이 기능은 기본적으로 활성화 되어 있어 개발자가 앱을 배포할 때 사용자 정의 빌드팩을 사용할 수 있습니다.
+
+2. **Allow SSH access to app containers** : 앱 인스턴스에 대한 SSH 액세스를 제어합니다.
+
+3. **Enable SSH when an app is created** : 기본적으로 새 앱에 대한 SSH 액세스를 활성화하려면 앱 생성 시 SSH 활성화 확인란을 선택합니다.
+
+4. **Gorouter app identity verification** : Gorouter가 암호화를 활성화하고 잘못된 라우팅을 방지하기 위해 앱 ID를 확인하는 방법을 선택합니다.
+   
+   - The Gorouter uses TLS to verify app identity : Gorouter가 TLS를 사용하여 앱 ID를 확인할 수 있도록 합니다. 이것이 기본 옵션입니다.
+   
+   - The Gorouter and apps use mutual TLS to verify each other's identity : 이 옵션은 앱 컨테이너가 Gorouter에서 들어오는 통신만 수락하기 때문에 TCP 라우팅을 비활성화합니다.
+
+5. **Private Docker insecure registry allow list** : 쉼표로 구분된 IP 주소 범위 목록을 제공하여 Docker 컨테이너에서 앱 인스턴스를 실행하도록 VM용 TAS를 구성할 수 있습니다.
+
+6. **Docker images disk cleanup scheduling on Diego Cell VMs** : 디스크 사용량을 채워 디스크 공간 정리를 선택한 경우 Reserved disk space for other jobs에 MB 단위로 값을 입력합니다.
+
+7. **Enable containerd delegation** : Garden이 컨테이너 생성 및 삭제 작업을 containerd 도구에 위임하는지 여부를 결정합니다. 기본적으로 이 옵션은 활성화되어 있으며 Garden은 containerd를 사용합니다.
+
+8. **Max-in-flight container starts** : 이 숫자는 배포 시 디에고 셀에서 시작되는 최대 인스턴스 수를 구성합니다. 0은 제한이 없음을 의미합니다.
+
+9. **NFSv3 volume services** : NFS 볼륨 서비스를 통해 앱 개발자는 공유 파일 액세스를 위해 기존 NFS 볼륨을 앱에 바인딩할 수 있습니다. (선택)NFSv3 볼륨 서비스에 대해 LDAP를 구성하려면 다음과 같이 설정합니다.
+   
+   - LDAP service account user : 볼륨 서비스를 관리할 LDAP 서비스 계정의 사용자 이름을 입력합니다.
+   
+   - LDAP service account password : 서비스 계정의 비밀번호를 입력합니다.
+   
+   - LDAP server host : LDAP 서버의 호스트 이름 또는 IP 주소를 입력합니다.
+   
+   - LDAP server port :  LDAP 서버 포트 번호를 입력합니다. 기본값은 389입니다.
+   
+   - LDAP user search base : LDAP 사용자 검색이 시작되는 LDAP 디렉토리 트리의 위치를 ​​입력합니다. 일반적인 LDAP 검색 기반은 도메인 이름과 일치합니다.
+   
+   - LDAP server CA certificate :  LDAP 서버가 TLS를 지원하고 NFS 드라이버에서 LDAP 서버로의 TLS 연결을 활성화하려는 경우 선택적으로 인증서를 입력할 수 있습니다.
+
+10. **Enable SMB volume services** : SMB 볼륨 서비스를 활성화하면 개발자가 기존 SMB 공유를 앱에 바인딩할 수 있습니다. SMB 볼륨을 활성화하는 경우 Errands창에서 SMB Broker Errand를 On으로 설정합니다.
+
+11. **Default health check timeout. Enter value in seconds** : 이 필드에 구성된 값은 앱 시작과 앱의 첫 번째 정상 응답 사이에 허용되는 시간입니다. 상태 확인이 구성된 제한 시간 내에 정상 응답을 받지 못하면 앱이 비정상으로 선언됩니다. 기본 제한 시간은 `60`초이고 구성 가능한 최대 제한 시간은 `600`초입니다.
+
+12. (선택)**App log rate limit (beta)** : 앱 인스턴스가 초당 생성할 수 있는 로그 라인 수를 제한하려면 정수 값을 입력합니다.
+
+
+
+##### 모든 설정 입력 후 Save를 클릭합니다.
+
+
+
+- **App Developer Controls**
+
+![](appdevelopercontrols01.png)
+
+1. **Maximum file upload size** : 빌드팩을 포함한 앱 업로드의 최대 크기를 MB 단위로 입력합니다.
+
+2. **Maximum package size** : 앱 파일의 최대 총 크기(MB)입니다.
+
+3. **Default app memory** : 지정된 값이 없는 경우 새로 배포된 앱에 할당된 기본 메모리 양(MB)입니다.
+
+4. **Default app memory quota per org** : ORG의 모든 앱에 대한 기본 메모리 제한입니다. 초기 설치 후 운영자가 cf CLI를 사용하여 기본값을 변경할 수 있습니다.
+
+5. **Maximum disk quota per app** : 앱당 허용되는 최대 디스크 양입니다. 디스크 용량이 부족하면 큰 앱이 성공적으로 배포되지 않을 수 있습니다.
+
+6. **Default disk quota per app** : 새로 배포된 앱에 기본적으로 할당된 디스크의 양입니다.
+
+7. **Default service instance quota per org** : ORG 당 기본 서비스 인스턴스 할당량을 입력합니다. 초기 설치 후 운영자가 cf CLI를 사용하여 기본값을 변경할 수 있습니다.
+
+8. **Staging timeout** : 클라우드 컨트롤러로 앱 droplet을 준비하면 이 필드에 지정한 시간(초) 후에 서버가 시간 초과됩니다.
+
+9. **Internal domains** : 앱이 내부 DNS 서비스 검색에 사용하는 도메인을 하나 이상 입력합니다. 이 값의 기본값은 `apps.internal`입니다.
+
+10. **Allow space developers to manage network policies** : 확인란을 활성화하여 개발자가 자신의 앱에 대한 자체 네트워크 정책을 관리하도록 허용할 수 있습니다.
+
+
+
+##### 모든 설정 입력 후 Save를 클릭합니다.
+
+
+
+- **App Security Groups**
+
+![](appsecuritygroups01.png)
+
+1. **Type "X" to acknowledge this requirement** : 안전한 앱 배포를 위해서는 적절한 앱 보안 그룹을 설정하는것이 중요합니다. TAS for VMs 배포가 완료된 후 적절한 앱 보안 그룹 설정에 대한 책임이 귀하에게 있음을 인정하려면  `X` 를 입력합니다.
+
+
+
+##### 모든 설정 입력 후 Save를 클릭합니다.
+
+
+
+- **Authentication and Enterprise SSO** 
+
+![](sso01.png)
+
+1. **Configure your UAA user account store with either internal or external authentication mechanisms** 
+   
+   -  Internal UAA : 내부 UAA를 선택하고 절차에 따라 비밀번호 정책을 구성하십시오.
+   
+   - SAML identity provider : SAML을 통해 외부 ID 공급자에 연결하려면 선택 후 구성하십시오.
+   
+   - LDAP server : 외부 LDAP 서버에 연결하려면 선택 후 구성하십시오.
+
+
+
+##### 모든 설정 입력 후 Save를 클릭합니다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
