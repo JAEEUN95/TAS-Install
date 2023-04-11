@@ -656,7 +656,9 @@ Metric Registrar를 사용하면 구조화된 로그를 메트릭으로 변환�
 
 
 
-##### 모든 설정 입력 후 Save를 클릭합니다.
+##### `모든 설정 입력 후 Save를 클릭합니다.`
+
+---
 
 - ### **Errands**
 
@@ -676,9 +678,11 @@ Metric Registrar를 사용하면 구조화된 로그를 메트릭으로 변환�
 | **SMB Broker Application Errand**      | VM용 SMB Volume Services for TAS를 지원하는 SMB Broker 앱을 배포합니다.                         |
 | **Rotate CC Database Key**             | Cloud Controller 데이터베이스의 중요한 데이터를 현재 지정된 기본 키로 변환합니다.                              |
 
+##### 
 
+##### `모든 설정 입력 후 Save를 클릭합니다.`
 
-##### 모든 설정 입력 후 Save를 클릭합니다.
+---
 
 - ### **Resource Config**
 
@@ -702,7 +706,7 @@ Metric Registrar를 사용하면 구조화된 로그를 메트릭으로 변환�
 
 
 
-##### 모든 설정 입력 후 Save를 클릭합니다.
+##### `모든 설정 입력 후 Save를 클릭합니다.`
 
 ---
 
