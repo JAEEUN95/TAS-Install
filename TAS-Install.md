@@ -46,9 +46,10 @@ IMPORT A PRODUCT 버튼을 클릭하여 Ops Manager에 추가합니다.
 
 ※ *Note:  Gorouter IP 또는 HAProxy IP 필드에서 특정 IP 주소를 할당하도록 선택한 경우 이러한 IP 주소가 Ops Manager에서 VM용 TAS에 대해 구성한 서브넷에  있는지 확인하십시오.*
 
-| HAProxy 사용여부 | Gorouter IP 필드 | HAProxy IP 필드 |
-| ------------ | -------------- | ------------- |
-|              |                |               |
+| **HAProxy 사용 여부** | **Gorouter IPs**                                                                                                                                                               | **HAProxy IPs**                                                                                                                                                                |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| No                | 1. Ops Manager에서 구성한 서브넷에서 IP 주소를 선택합니다.<br>2. Gorouter IPs 필드에 다음 IP 주소를 입력합니다. 고가용성을 위해 IP 주소를 두 개 이상 지정해야 합니다.<br>3. 배포를 위해 구성한 도메인에 대한 요청을 이러한 IP 주소로 전달하도록 로드 밸런서를 구성합니다. | 공백                                                                                                                                                                             |
+| Yes               | 공백                                                                                                                                                                             | 1. Ops Manager에서 구성한 서브넷에서 IP 주소를 선택합니다.<br>2. HAProxy IPs 필드에 이러한 IP 주소를 입력합니다. 고가용성을 위해 IP 주소를 두 개 이상 지정해야 합니다.<br>3. 배포를 위해 구성한 도메인에 대한 요청을 이러한 IP 주소로 전달하도록 로드 밸런서를 구성합니다. |
 
 2. (선택) **SSH Proxy IPs 및 TCP router IPs** : SSH Proxy 포트 2222의 앱 컨테이너에 대한 SSH 요청을 수락하는 Diego Brain IP 주소를 추가합니다. TCP router에 할당하려는 IP 주소를 추가합니다. 이 창 하단에서 이 기능을 활성화 합니다. 
 
@@ -340,8 +341,6 @@ IMPORT A PRODUCT 버튼을 클릭하여 Ops Manager에 추가합니다.
 
 13. (선택)**System zone CORS policy enforcement across all identity zones** : TAS Single Sign-On을 사용 중이고 사용자 지정 ID 영역에 대한 CORS 정책을 준수하려면 확인란을 선택 취소합니다. 이 확인란은 기본적으로 활성화 되어있습니다. 선택한 상태이면 UAA는 사용자 지정 ID 영역에 대한 CORS 정책을 무시하고 시스템 기본 ID 영역 CORS 정책을 모든 영역에 적용합니다.
 
-
-
 ##### 모든 설정 입력 후 Save를 클릭합니다.
 
 - ### **CredHub**
@@ -371,8 +370,6 @@ IMPORT A PRODUCT 버튼을 클릭하여 Ops Manager에 추가합니다.
    - HSM provider partition, HSM provider partition password, HSM provider client certificate, HSM provider encryption keys, HSM provider servers
 
 5. (선택)배포시 CredHub에 서비스 인스턴스 자격 증명(서비스 바인딩) 저장을 원하는 Ops Manager 서비스를 사용하고 이 기능을 활성화 하기 위해서 확인란을 활성화합니다.
-   
-   
 
 ##### 모든 설정 입력 후 Save를 클릭합니다.
 
@@ -385,8 +382,6 @@ IMPORT A PRODUCT 버튼을 클릭하여 Ops Manager에 추가합니다.
    - Internal databases - MySQL - Percona XtraDB Cluster : Ops Manager와 함께 제공되는 내부 MySQL 데이터베이스를 사용하도록 TAS를 구성합니다.
    
    - External databases : 외부 데이터베이스를 구성하기 위해 설정합니다.
-   
-   
 
 ##### 모든 설정 입력 후 Save를 클릭합니다.
 
@@ -420,8 +415,6 @@ Databases 창에서 Internal databases를 선택한 경우에만 이 섹션을 �
 
 12. **Prevent node auto re-join** : MySQL Interruptor를 사용하여 데이터가 일치하지 않는 노드가 MySQL 데이터베이스에 기록되지 않도록 합니다.
 
-
-
 ##### 모든 설정 입력 후 Save를 클릭합니다.
 
 - ### **File Storage**
@@ -443,8 +436,6 @@ Databases 창에서 Internal databases를 선택한 경우에만 이 섹션을 �
    - Exclude droplets and packages from file storage backup : 백업에서 droplet 및 패키지를 제외합니다. 이 옵션을 선택하면 복원 중에 모든 앱을 다시 re-push 해야 합니다.
 
 4. **Cloud Controller filesystem** : Internal WebDAV를 제외한 다른 옵션은 환경 구성에 따라 선택합니다.
-
-
 
 ##### 모든 설정 입력 후 Save를 클릭합니다.
 
@@ -483,8 +474,6 @@ System Logging 창 에서 TAS 컴포넌트 VM의 로그 메시지를 외부 �
 
 9. **System metrics scrape interval** : 시스템 메트릭을 로깅 엔드포인트로 더 자주 또는 덜 자주 보내기 위해서 해당 값을 변경합니다. 기본값은 1m이고 최소 권장 값은 5s 입니다.
 
-
-
 ##### 모든 설정 입력 후 Save를 클릭합니다.
 
 - ### **(선택)Custom Branding**
@@ -492,9 +481,6 @@ System Logging 창 에서 TAS 컴포넌트 VM의 로그 메시지를 외부 �
 ![](custombranding01.png)
 
 1. TAS 로그인 포털 및 Apps Manager의 모양을 사용자 지정할 수 있습니다.
-
-
-
 - ### **(선택)Apps Manager**
 
 ![](appsmanager01.png)
@@ -521,8 +507,6 @@ System Logging 창 에서 TAS 컴포넌트 VM의 로그 메시지를 외부 �
 
 11. **Apps Manager polling interval** : Apps Manager 폴링 간격 필드는 Apps Manager 사용으로 인해 Cloud Controller 응답 시간이 저하될 경우 임시 해결책을 제공합니다. 이 필드는 Apps Manager 성능을 저하시킬 수 있으므로 장기적인 수정 사항으로 수정하지 않는 것이 좋습니다. 
 
-
-
 ##### 모든 설정 입력 후 Save를 클릭합니다.
 
 ---
@@ -532,8 +516,6 @@ System Logging 창 에서 TAS 컴포넌트 VM의 로그 메시지를 외부 �
 ![](email01.png)
 
 TAS는 SMTP를 사용하여 Apps Manager 사용자에게 초대 및 확인을 보낼 수 있습니다. 이 서비스가 필요하지 않으면 창을 비워놓고 다음 설정을 진행합니다.
-
-
 
 ##### 모든 설정 입력 후 Save를 클릭합니다.
 
@@ -556,8 +538,6 @@ App Autoscaler를 사용하려면 서비스 인스턴스를 생성하고 앱에 
 6. **Disable API connection pooling** : Autoscaler API에서 HTTP 연결을 재사용하지 않으려면 Disable API connection pooling 확인란을 선택합니다. Gorouter의 프론트 엔드 유휴 시간 초과가 1초와 같은 낮은 값으로 설정된 경우 이 작업이 필요할 수 있습니다.
 
 7. **Enable email notifications** : Autoscaler 이벤트의 이메일 알림을 사용하려면 이메일 알림 사용 확인란을 선택합니다.
-
-
 
 ##### 모든 설정 입력 후 Save를 클릭합니다.
 
@@ -591,8 +571,6 @@ App Autoscaler를 사용하려면 서비스 인스턴스를 생성하고 앱에 
 
 8. (선택)**Encryption key ledger** : Encryption key ledger field를 사용하여 CCDB(Cloud Controller Database) 암호화 키를 회전합니다.
 
-
-
 ##### 모든 설정 입력 후 Save를 클릭합니다.
 
 - ### **Smoke Tests**
@@ -604,8 +582,6 @@ Smoke test가 실행되는 Org, Space를 구성합니다. Smoke test 시 생성�
 - A temporary space within the system org : Shared 도메인이 있는 경우 System Org 내에 임시 공간을 선택합니다. 테스트 후 Space는 삭제 됩니다.
 
 - A specified domain, org, and space : Smoke test를 위해 특정 Org, Space를 선택하기 위해서는 이 옵션을 선택합니다.
-
-
 
 ##### 모든 설정 입력 후 Save를 클릭합니다.
 
@@ -633,8 +609,6 @@ Smoke test가 실행되는 Org, Space를 구성합니다. Smoke test 시 생성�
 
 9. **Usage Service cutoff age** : Usage Service는 365일후에 세분화 된 데이터를 삭제합니다.
 
-
-
 ##### 모든 설정 입력 후 Save를 클릭합니다.
 
 - ### **(선택)Metric Registrar**
@@ -653,8 +627,6 @@ Metric Registrar를 사용하면 구조화된 로그를 메트릭으로 변환�
    - `job`
    - `index`
    - `id`
-
-
 
 ##### `모든 설정 입력 후 Save를 클릭합니다.`
 
@@ -704,10 +676,6 @@ Metric Registrar를 사용하면 구조화된 로그를 메트릭으로 변환�
 
 4. HAProxy를 사용하지 않는 경우 HAProxy INSTANCES `0` 을 설정합니다.
 
-
-
 ##### `모든 설정 입력 후 Save를 클릭합니다.`
 
 ---
-
-
