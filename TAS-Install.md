@@ -1,12 +1,10 @@
 # 설치 방법
 
-## TAS 설치
+## TAS (VMware Tanzu Application Service) 설치
 
-#### VMware Tanzu Application Service
+### VM용 TAS 구성
 
-#### VM용 TAS 구성
-
-**전제 조건**
+***전제 조건***
 
 이 절차를 시작하기 전에 다음을 수행해야 합니다.
 
@@ -18,7 +16,7 @@ VM용 TAS를 구성하려면 먼저 Ops Manager 설치 대시보드에 VM용 TAS
 
 IMPORT A PRODUCT 버튼을 클릭하여 Ops Manager에 추가합니다.
 
-- **Assign AZs and Networks**
+- ### **Assign AZs and Networks**
 
 ![](assingaz01.png)
 
@@ -30,7 +28,7 @@ IMPORT A PRODUCT 버튼을 클릭하여 Ops Manager에 추가합니다.
 
 ##### 모든 설정 입력 후 Save를 클릭합니다.
 
-- **Domains**
+- ### **Domains**
 
 ![](domains01.png)
 
@@ -40,7 +38,7 @@ IMPORT A PRODUCT 버튼을 클릭하여 Ops Manager에 추가합니다.
 
 ##### 모든 설정 입력 후 Save를 클릭합니다.
 
-- **Networking**
+- ### **Networking**
 
 ![](networking09.png)
 
@@ -188,13 +186,9 @@ IMPORT A PRODUCT 버튼을 클릭하여 Ops Manager에 추가합니다.
 
 40. (선택)**Sticky session cookies** : 하나 이상의 고정 세션 쿠키 이름을 입력합니다. 기본 쿠키 이름은 JSESSIONID 입니다. 일부 앱에는 다른 쿠키 이름이 필요합니다. 예를 들어 Spring WebFlux에는 SESSION 이름이 필요합니다. Gorouter는 이러한 쿠키를 사용하여 세션 선호도 또는 고정 세션을 지원합니다.
 
-
-
 ##### 모든 설정 입력 후 Save를 클릭합니다.
 
-
-
-- **App Containers**
+- ### **App Containers**
 
 ![](appcontainers01.png)
 
@@ -238,13 +232,9 @@ IMPORT A PRODUCT 버튼을 클릭하여 Ops Manager에 추가합니다.
 
 12. (선택)**App log rate limit (beta)** : 앱 인스턴스가 초당 생성할 수 있는 로그 라인 수를 제한하려면 정수 값을 입력합니다.
 
-
-
 ##### 모든 설정 입력 후 Save를 클릭합니다.
 
-
-
-- **App Developer Controls**
+- ### **App Developer Controls**
 
 ![](appdevelopercontrols01.png)
 
@@ -268,25 +258,17 @@ IMPORT A PRODUCT 버튼을 클릭하여 Ops Manager에 추가합니다.
 
 10. **Allow space developers to manage network policies** : 확인란을 활성화하여 개발자가 자신의 앱에 대한 자체 네트워크 정책을 관리하도록 허용할 수 있습니다.
 
-
-
 ##### 모든 설정 입력 후 Save를 클릭합니다.
 
-
-
-- **App Security Groups**
+- ### **App Security Groups**
 
 ![](appsecuritygroups01.png)
 
 1. **Type "X" to acknowledge this requirement** : 안전한 앱 배포를 위해서는 적절한 앱 보안 그룹을 설정하는것이 중요합니다. TAS for VMs 배포가 완료된 후 적절한 앱 보안 그룹 설정에 대한 책임이 귀하에게 있음을 인정하려면  `X` 를 입력합니다.
 
-
-
 ##### 모든 설정 입력 후 Save를 클릭합니다.
 
-
-
-- **Authentication and Enterprise SSO** 
+- ### **Authentication and Enterprise SSO**
 
 ![](sso01.png)
 
@@ -298,35 +280,226 @@ IMPORT A PRODUCT 버튼을 클릭하여 Ops Manager에 추가합니다.
    
    - LDAP server : 외부 LDAP 서버에 연결하려면 선택 후 구성하십시오.
 
+##### 모든 설정 입력 후 Save를 클릭합니다.
+
+- ### **UAA**
+
+![](uaa01.png)
+
+1. **UAA database location** : 다음 옵션 중 하나를 선택합니다.
+   
+   - Tanzu Application Service database : 다른 컴포넌트 VM이 사용하는 것과 동일한 데이터베이스 서버를 사용합니다.
+   
+   - Other external database : UAA에 대해 별도의 전용 데이터베이스 서버를 사용합니다.
+
+2. (선택)**JWT issuer URI** : UAA가 토큰을 생성할 때 발급자로 사용하는 URI를 입력합니다.
+
+3. **SAML service provider credentials** : UAA가 나가는 SAML 인증 요청에 서명하기 위해 SAML 서비스 공급자로 사용할 인증서 및 개인 키를 입력합니다.
+   
+   - Generate RSA Certificate 클릭
+     
+     - ex) `*.DOMAIN.com`, `*.apps.DOMAIN.com`, `*.sys.DOMAIN.com`,`*.login.sys.DOMAIN.com`, `*.uaa.sys.DOMAIN.com`
+
+4. (선택)**SAML service provider key password** : SAML service provider credentials에 개인 키 비밀번호로 보호된 경우 비밀번호를 입력합니다.
+
+5. (선택)**SAML Entity ID override** : 사용자 지정 SAML 엔터티를 입력하여 기본값(http://login.SYSTEM-DOMAIN)을 재정의하려면 ID를 입력합니다.
+
+6. **Signature algorithm** : 서명 알고리즘을 선택합니다. 기본값은 SHA256입니다.
+
+7. **Apps Manager access token lifetime**
+   
+   **Cloud Foundry CLI access token lifetime**
+   
+   **Cloud Foundry CLI refresh token lifetime**  
+   
+   - (선택)Apps Manager 및 cf CLI 로그인 액세스 및 새로 고침에 부여된 토큰의 수명을 변경합니다. 대부분의 배포는 기본값을 사용합니다.
+
+8. **Global login session maximum timeout** 
+   
+   **Global login session idle timeout** 
+   
+   - 글로벌 로그인 시간이 초과되기 전의 최대 시간(초)를 변경합니다. 
+   
+   - 기본 영역 세션(Apps Manager, Ops Manager Metrics 및 UAA 기본 영역을 사용하는 기타 웹 UI의 세션) 과 UAA ID 영역을 사용하는 앱 영역이 이에 해당합니다.
+
+9. (선택)**Username label, Password label** : cf CLI 및 Apps Manager 로그인 팝업 텍스트 프롬프트를 사용자 지정합니다.
+
+10. (선택)**Proxy IPs regular expression** : UAA가 역방향 프록시 IP 주소로 간주하는 파이프로 구분된 정규식 집합이 포함되어 있습니다.
+
+11. (선택) 프록시를 인식하도록 UAA를 구성하려면 다음 필드를 설정합니다.
+    
+    - **List of proxy servers:** HTTP/TCP 백엔드의 첫 번째 그룹에 대한 라우터 IP 주소의 쉼표로 구분된 목록을 입력합니다.
+    
+    - **http proxy:** http를 통한 모든 요청에 사용되는 VM의 http_proxy를 입력합니다.
+    
+    - **https proxy:** https를 통한 모든 요청에 사용되는 VM의 https_proxy를 입력합니다.
+    
+    - **no proxy:** 쉼표로 구분된 도메인, IP 주소 또는 DNS 접미사 목록을 입력합니다.
+
+12. (선택)**Client basic auth compatibility mode** : UAA 클라이언트 기본 인증 자격 증명에 URL 인코딩을 요구하려면 클라이언트 기본 인증 호환성 모드 확인란을 비활성화합니다. 기본적으로 확인란이 활성화되어 있으며 URL 인코딩이 필요하지 않습니다.
+
+13. (선택)**System zone CORS policy enforcement across all identity zones** : TAS Single Sign-On을 사용 중이고 사용자 지정 ID 영역에 대한 CORS 정책을 준수하려면 확인란을 선택 취소합니다. 이 확인란은 기본적으로 활성화 되어있습니다. 선택한 상태이면 UAA는 사용자 지정 ID 영역에 대한 CORS 정책을 무시하고 시스템 기본 ID 영역 CORS 정책을 모든 영역에 적용합니다.
+
 
 
 ##### 모든 설정 입력 후 Save를 클릭합니다.
 
+- ### **CredHub**
+
+![](credhub01.png)
+
+1. **CredHub database location** : CredHub 데이터베이스의 위치를 선택합니다. TAS for VMs에는 서비스 인스턴스 자격 증명을 저장하기 위한 서비스용 CredHub 데이터베이스가 포함되어 있습니다.
+   
+   - Tanzu Application Service database : 이 옵션을 선택하면 CredHub는 데이터베이스가 내부인지 외부인지에 관계없이 다른 TAS for VMs 구성 요소와 동일한 데이터베이스를 사용합니다. 
+   
+   - Other external database : 이 옵션을 선택하는 경우 다음 필드를 구성합니다.
+     
+     - Hostname, TCP port, Username, Password, Database CA certificate (Enter only one), Disable hostname verification
+
+2. (선택)**KMS plugin providers** : 하나 이상의 KMS(키 관리 서비스) 공급자를 지정합니다.
+
+3. **Internal encryption provider keys** : CredHub 데이터베이스에 저장된 값을 암호화하고 해독하는데 사용할 하나 이상의 키를 지정합니다. 
+   
+   - Name : 키 이름을 입력합니다.
+   
+   - Key : 20자 이상의 값을 입력합니다. 이 키는 모든 데이터를 암호화하는데 사용됩니다.
+   
+   - Primary : 이 확인란은 위에서 지정한 키를 기본 암호화 키로 표시합니다. 둘 이상의 기본키를 생성할 수 없습니다.
+
+4. (선택)HSM(하드웨어 보안 모듈)을 암호화 공급자로 사용하려는 경우 다음 필드를 구성합니다.
+   
+   - HSM provider partition, HSM provider partition password, HSM provider client certificate, HSM provider encryption keys, HSM provider servers
+
+5. (선택)배포시 CredHub에 서비스 인스턴스 자격 증명(서비스 바인딩) 저장을 원하는 Ops Manager 서비스를 사용하고 이 기능을 활성화 하기 위해서 확인란을 활성화합니다.
+   
+   
+
+##### 모든 설정 입력 후 Save를 클릭합니다.
+
+- ### **Databases**
+
+![](databases01.png)
+
+1. **System databases location**
+   
+   - Internal databases - MySQL - Percona XtraDB Cluster : Ops Manager와 함께 제공되는 내부 MySQL 데이터베이스를 사용하도록 TAS를 구성합니다.
+   
+   - External databases : 외부 데이터베이스를 구성하기 위해 설정합니다.
+   
+   
+
+##### 모든 설정 입력 후 Save를 클릭합니다.
+
+- ### **(선택) Internal MySQL**
+
+![](internalmysql01.png)
+
+Databases 창에서 Internal databases를 선택한 경우에만 이 섹션을 구성할 수 있습니다.
+
+1. **Replication canary time period** : canary 복제 실패를 확인하는 빈도를 지정합니다. 기본값인 30초를 그대로 두거나 배포 요구 사항에 따라 값을 수정합니다.
+
+2. **Replication canary read delay** : 데이터가 각 MySQL 노드에서 복제되고 있음을 확인하기 전에 canary가 대기하는 시간(초)을 지정합니다.
+
+3. **Email address** : 클러스터에 복제 문제가 발생하거나 노드가 클러스터에 자동 재결합하도록 허용되지 않을 때 MySQL 서비스가 경고를 보내는 이메일 주소를 입력합니다.
+
+4. **Allow command history** : 기본적으로 활성화되어 있습니다. MySQL 노드에서 명령줄 기록 파일 생성을 금지하려면 이 확인란을 선택 취소합니다.
+
+5. **Allow remote admin access** : 관리 및 읽기 전용 관리 사용자가 모든 원격 호스트에서 연결할 수 있도록 허용하려면 원격 관리 액세스 허용확인란을 선택합니다.
+
+6. **Cluster probe timeout** : 새 노드가 기존 클러스터 노드를 검색하는 최대 시간(초)을 입력합니다. 공백 값은 10초입니다.
+
+7. **Maximum connections** : 데이터베이스에 허용되는 최대 연결 수를 입력합니다. 기본값은 3500입니다.
+
+8. **Server activity logging** : MySQL 서비스가 기록할 이벤트를 입력할 수 있습니다.
+
+9. **Load balancer healthy threshold** : MySQL 프록시 인스턴스가 시작되었음을 보고할 때까지 대기할 시간(초)을 입력합니다. 기본값은 0초 입니다.
+
+10. **Load balancer unhealthy threshold** : MySQL 프록시가 종료되기 전에 연결을 계속 수락하는 시간을 초 단위로 입력합니다. 기본값은 30초입니다.
+
+11. **Enable inactive MySQL port** : MySQL 프록시가 포트 3336에서 수신을 대기하도록 하려면 확인란을 선택합니다.
+
+12. **Prevent node auto re-join** : MySQL Interruptor를 사용하여 데이터가 일치하지 않는 노드가 MySQL 데이터베이스에 기록되지 않도록 합니다.
 
 
 
+##### 모든 설정 입력 후 Save를 클릭합니다.
+
+- ### **File Storage**
+
+![](filestorage02.png)
+
+**Maximum valid packages per app** : 현재 droplet에 대한 패키지를 포함하지 않고 앱이 저장할 수 있는 앱당 최대 유효 패키지의 최대 수를 설정하려면 값을 입력합니다. 기본값은 2입니다.
+
+1. **Maximum staged droplets per app** : 현재 droplet에 대한 패키지를 포함하지 않고 앱이 저장할 수 있는 앱당 최대 드롭렛 필드에 값을 입력합니다.
+
+※ *Note:  Droplet : 앱을 Diego Cell VM에 배포하기 전 클라우드 컨트롤러는 빌드팩 및 소스 코드를 Diego Cell VM이 압축을 풀고 컴파일하고 실행할 수 있는 형태*
+
+3. **File storage backup level** : Blobstore에서 백업할 항목을 선택합니다.
+   
+   - Complete file storage backup : 전체 blobstore가 포함됩니다. 여기에는 droplet, 패키지 및 빌드팩이 포함됩니다.
+   
+   - Exclude droplets from file storage backup : 백업에서 droplet을 제외합니다. 이 옵션을 선택하면 복원 중에 모든 앱을 re-stage 해야 합니다.
+   
+   - Exclude droplets and packages from file storage backup : 백업에서 droplet 및 패키지를 제외합니다. 이 옵션을 선택하면 복원 중에 모든 앱을 다시 re-push 해야 합니다.
+
+4. **Cloud Controller filesystem** : Internal WebDAV를 제외한 다른 옵션은 환경 구성에 따라 선택합니다.
 
 
 
+##### 모든 설정 입력 후 Save를 클릭합니다.
+
+- ### **(선택)System Logging**
+
+![](systemloging01.png)
+
+System Logging 창 에서 TAS 컴포넌트 VM의 로그 메시지를 외부 서비스로 전달하도록 TAS의 시스템 로깅을 구성할 수 있습니다.
+
+1. **Address, Port, Transport protocol** : syslog 서버의 정보를 입력합니다.
+
+2. **Encrypt syslog using TLS** : TLS를 사용하여 syslog를 암호화 할 수 있습니다.
+
+3. **Enable Cloud Controller security event logging** : 로그 스트림에 보안 이벤트를 포함하려면 확인란을 선택합니다. 
+
+4. **Use TCP for file forwarding local transport** : 확인란을 활성화하여 TCP를 통해 로그를 전송합니다.
+
+5. **Do not forward debug logs** : 확인란은 기본적으로 활성화되어 있습니다. DEBUG syslog 메시지를 외부 서비스로 전달하려면 확인란을 비활성화합니다.
+
+6. **Custom rsyslog configuration** : 사용자 지정 syslog 규칙을 입력합니다.
+
+7. **Timestamp format for component logs** : 컴포넌트 로그의 타임스탬프 형식 중 하나를 선택합니다.
+
+8. TAS가 배포 환경에서 수집을 위해 앱 로그 및 앱 메트릭을 내보내는 방법을 구성합니다.
+   
+   다음 표는 필드 값에 대한 자세한 정보를 제공합니다.
+   
+   | 필드 명                                            | 설명                                                                                                                                                                       |
+   | ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+   | **Enable V1 Firehose**                          | 기본적으로 활성화됩니다. 활성화되면 앱 로그 및 앱 지표가 Loggregator V1 Firehose로 흐릅니다.                                                                                                          |
+   | **Enable V2 Firehose**                          | 기본적으로 활성화됩니다. 활성화되면 앱 로그 및 앱 메트릭이 Loggregator V2 Firehose로 흐릅니다. 체크박스를 선택 취소하여 V2 Firehose를 비활성화하면 V1 Firehose도 비활성화해야 합니다.                                              |
+   | **Enable Log Cache syslog ingestion**           | 기본적으로 비활성화되어 있습니다. 역방향 로그 프록시 대신 syslog 서버를 통해 앱 로그 및 앱 메트릭을 수집하도록 로그 캐시를 구성합니다. V1 Firehose를 비활성화하는 경우 서비스 타일 메트릭을 수신하려면 로그 캐시 syslog 수집을 활성화해야 합니다.                    |
+   | **Default loggregator drain metadata**          | 기본적으로 활성화됩니다. 활성화되면 TAS는 앱의 모든 메타데이터를 전송하고 syslog 드레인을 집계합니다. 이 옵션을 비활성화하면 외부 데이터베이스에 대한 로깅을 최대 50%까지 줄일 수 있습니다.                                                         |
+   | **Disable logs in Firehose**                    | 기본적으로 선택 취소되어 있습니다. Firehose가 앱 로그를 내보내는 것을 방지하지만 Firehose가 앱 메트릭을 내보내는 것은 허용합니다. Firehose에서 로그를 비활성화하면 Doppler 및 트래픽 컨트롤러 VM을 축소할 수 있으므로 VM에 대한 TAS의 부하를 줄이는 데 도움이 됩니다. |
+   | **Aggregate log and metric drain destinations** | 집계 드레이닝은 기반의 모든 앱 로그를 이 필드에 제공하는 엔드포인트로 전달합니다. 집계 로그 드레인에 대한 쉼표로 구분된 syslog 엔드포인트 목록을 입력합니다.                                                                             |
+
+9. **System metrics scrape interval** : 시스템 메트릭을 로깅 엔드포인트로 더 자주 또는 덜 자주 보내기 위해서 해당 값을 변경합니다. 기본값은 1m이고 최소 권장 값은 5s 입니다.
 
 
 
+##### 모든 설정 입력 후 Save를 클릭합니다.
+
+- ### **(선택)Custom Branding**
+
+![](custombranding01.png)
+
+1. TAS 로그인 포털 및 Apps Manager의 모양을 사용자 지정할 수 있습니다.
 
 
 
+- ### **Apps Manager**
 
+![](appsmanager01.png)
 
-
-
-
-
-
-
-
-
-
-
-
+1. 
 
 
 
