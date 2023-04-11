@@ -495,12 +495,215 @@ System Logging 창 에서 TAS 컴포넌트 VM의 로그 메시지를 외부 �
 
 
 
-- ### **Apps Manager**
+- ### **(선택)Apps Manager**
 
 ![](appsmanager01.png)
 
-1. 
+1. **Enable invitations** : 앱 관리자에서 초대를 활성화하려면 확인란을 선택합니다. Org Manager는 지정된 org에 새 사용자를 초대할 수 있고 Admin은 모든 org 및 space에 새 사용자를 초대할 수 있습니다.
+
+2. **Display Marketplace service plan prices** : Marketplace에 서비스 plan 가격을 표시합니다.
+
+3. **Choose which CF CLI packages to include** : 포함할 cf CLI 버전을 선택합니다.
+
+4. **Supported currencies as JSON** : 지원되는 통화를 JSON으로 입력하여 Marketplace에 표시합니다.
+
+5. **Product name, Marketplace name, Marketplace URL** : 사용자의 Marketplace를 가리키도록 설정할 수 있습니다.
+
+6. **Secondary navigation links** : 보조 탐색 링크 URL을 입력할 수 있습니다.
+
+7. (선택)**Apps Manager buildpack, Search Server buildpack, Invitations buildpack** : 해당 필드에 설정하고 싶은 빌드팩 명을 지정합니다.
+
+8. **Apps Manager memory usage** : 앱을 배포할 메모리 제한을 설정합니다. out of memory 오류로 인해 앱이 시작되지 않을 때 이 필드 값을 늘립니다. 공백 기본값은 128MB입니다.
+
+9. **Search Server memory usage** : 검색 서버 앱을 배포하는데 사용할 메모리 제한을 설정합니다. 공백 기본값은 256MB입니다.
+
+10. **Invitations memory usage** : 초대 앱을 배포할 메모리 제한을 설정합니다. 공백 기본값은 256MB입니다.
+
+11. **Apps Manager polling interval** : Apps Manager 폴링 간격 필드는 Apps Manager 사용으로 인해 Cloud Controller 응답 시간이 저하될 경우 임시 해결책을 제공합니다. 이 필드는 Apps Manager 성능을 저하시킬 수 있으므로 장기적인 수정 사항으로 수정하지 않는 것이 좋습니다. 
 
 
+
+##### 모든 설정 입력 후 Save를 클릭합니다.
+
+---
+
+- ### **(선택)Email Notifications**
+
+![](email01.png)
+
+TAS는 SMTP를 사용하여 Apps Manager 사용자에게 초대 및 확인을 보낼 수 있습니다. 이 서비스가 필요하지 않으면 창을 비워놓고 다음 설정을 진행합니다.
+
+
+
+##### 모든 설정 입력 후 Save를 클릭합니다.
+
+- ### **(선택)App Autoscaler**
+
+![](appautoscler01.png)
+
+App Autoscaler를 사용하려면 서비스 인스턴스를 생성하고 앱에 바인딩해야 합니다. 
+
+1. **Autoscaler instance count** : App Autsocaler 서비스의 인스턴스 수를 입력합니다. 기본값은 3입니다. 대규모 환경에서는 기본 수보다 더 많은 인스턴스가 필요할 수 있습니다. App Autoscaler를 사용하는 앱 10개당 하나의 App Autoscaler 인스턴스를 권장합니다.
+
+2. **Autoscaler API instance count** : 배포할 AppAutoscaler API 인스턴스 수를 입력합니다. 기본값은 1입니다. 대규모 환경에서는 기본 수보다 많은 인스턴스가 필요할 수 있습니다.
+
+3. **Metric collection interval** : 메트릭 수집 간격에 스케일링 결정을 내릴 때  AppAutoscaler에서 평가할 데이터 수집 시간(초)을 입력합니다. 최소 간격은 60초이고 최대 간격은 3600초입니다. 기본값은 120입니다.
+
+4. **Scaling interval** : AppAutoscaler가 확장을 위해 앱을 평가하는 빈도를 초 단위로 입력합니다. 최소 간격은 15초이고 최대 간격은 120초입니다. 기본값은 35입니다.
+
+5. **Enable verbose logging** : AppAutoscaler에 대한 상세 로깅을 사용하려면 상세 로깅 사용 확인란을 선택합니다. 상세 로깅은 기본적으로 비활성화됩니다.(이메일 또는 문자로 보냅니다.)
+
+6. **Disable API connection pooling** : Autoscaler API에서 HTTP 연결을 재사용하지 않으려면 Disable API connection pooling 확인란을 선택합니다. Gorouter의 프론트 엔드 유휴 시간 초과가 1초와 같은 낮은 값으로 설정된 경우 이 작업이 필요할 수 있습니다.
+
+7. **Enable email notifications** : Autoscaler 이벤트의 이메일 알림을 사용하려면 이메일 알림 사용 확인란을 선택합니다.
+
+
+
+##### 모든 설정 입력 후 Save를 클릭합니다.
+
+- ### **Cloud Controller**
+
+![](cloudcontroller01.png)
+
+1. **Cloud Controller database encryption key** : 다음 상황이 모두 일치하면 암호화 키를 입력하십시오.
+   
+   - 이전에 TAS를 배포하였습니다.
+   
+   - 그런 다음 VM에 대한 TAS를 중지했거나 중단했습니다.
+   
+   - Cloud Controller 데이터베이스 백업을 사용하여 VM용 TAS를 다시 배포하려고 합니다.
+
+2. **Cloud Foundry API rate limiting** : Cloud Foundry API 속도 제한을 비활성화하려면 Cloud Foundry API 속도 제한에서 Disable을 선택합니다. Cloud Foundry API 속도 제한을 활성화하려면 다음을 수행합니다.
+   
+   - General limit : 사용자 또는 클라이언트가 사용자 정의 제한이 없는 모든 엔드포인트에 대해 한 시간 간격으로 허용되는 요청 수를 입력합니다. 기본값은 2000입니다.
+   
+   - Unauthenticated limit : 인증되지 않은 클라이언트가 한 시간 동안 수행할 수 있는 요청 수를 입력합니다. 기본값은 100입니다.
+
+3. (선택)**Database connection validation timeout** : 데이터베이스 연결 유효성 검사 시간 제한을 초 단위로 입력합니다. 기본적으로 설정은 3600초 또는 60분입니다. -1을 입력하여 연결이 풀에서 체크아웃될 때마다 Cloud Controller가 데이터베이스에 추가 쿼리를 수행하도록 할 수 있습니다.
+
+4. (선택)**Database read timeout** : 데이터베이스 읽기 제한 시간(초)을 입력합니다. 기본적으로 설정은 3600초 또는 60분입니다.
+
+5. (선택)**Cloud Controller monit healthcheck timeout** : ccng_monit_http_healthcheck 프로세스에서 보낸 각 HTTP 요청의 시간 초과(초)3
+
+6. (선택)**Age of audit events pruned from Cloud Controller database** : CloudController 데이터베이스에서 제거된 audit 이벤트 기간(일)을 입력합니다.
+
+7. (선택)**Age of completed tasks pruned from Cloud Controller database** : Cloud Controller 데이터베이스에서 제거된 완료된 작업의 사용 기간(일)을 입력합니다.
+
+8. (선택)**Encryption key ledger** : Encryption key ledger field를 사용하여 CCDB(Cloud Controller Database) 암호화 키를 회전합니다.
+
+
+
+##### 모든 설정 입력 후 Save를 클릭합니다.
+
+- ### **Smoke Tests**
+
+![](smoketest01.png)
+
+Smoke test가 실행되는 Org, Space를 구성합니다. Smoke test 시 생성된 errand 앱을 배포하여 설치 또는 업데이트 후 TAS 타일에 대해 기본 기능 테스트를 실행합니다.
+
+- A temporary space within the system org : Shared 도메인이 있는 경우 System Org 내에 임시 공간을 선택합니다. 테스트 후 Space는 삭제 됩니다.
+
+- A specified domain, org, and space : Smoke test를 위해 특정 Org, Space를 선택하기 위해서는 이 옵션을 선택합니다.
+
+
+
+##### 모든 설정 입력 후 Save를 클릭합니다.
+
+- ### **(선택)Advanced Features**
+
+![](advancedfeature01.png)
+
+특정 제약이 있을 수 있는 기능이 포함되어 있습니다. 운영 환경에서는 해당 기능을 사용할 때 주의할 것을 권장합니다. Resource Config 탭에 있는 디스크 공간 및 메모리 세트의 전체 할당을 사용하지 않는 경우 이 기능을 사용할 수 있습니다. 이 필드는 디스크 및 메모리 리소스를 각 Diego Cell VM에 오버 커밋하는 양을 제어합니다.
+
+1. **Diego Cell memory capacity** : Diego Cell 메모리 용량 필드에 원하는 총 Diego Cell 메모리 양을 MB로 입력합니다.
+
+2. **Diego Cell disk capacity** : Diego Cell 디스크 용량 필드에 원하는 총 Diego Cell 디스크 용량을 MB로 입력합니다. 
+
+3. **App graceful shutdown period** : 앱이 진행 중인 작업을 완료하고 정상적으로 종료하는 데 더 오랜 시간이 필요한 경우 정상 종료 기간을 늘릴 수 있습니다. 기본값은 10초로 설정 되어 있습니다.
+
+4. **Non-RFC-1918 private network allow list** : 사설 네트워크 망을 사용할 시 사용 네트워크 정보 추가해야합니다. 일반적으로 `10.0.0.0/8, 172.16.0.0/12`, or `192.168.0.0/16`를 사용합니다.
+
+5. **CF CLI connection timeout** : Timeout은 Notifications, AutoScaler 및 Apps Manager와 같은 VM errand 앱을 배포하는 데 사용되는 cf CLI 명령에 영향을 줍니다.
+
+6. Diego 및 컨테이너 네트워킹 구성 요소가 가질 수 있는 동시 최대 데이터베이스 연결 수를 구성할 수 있습니다.
+
+7. **Disable rolling app deployments** : 롤링 앱 배포를 비활성화 할 수 있습니다.
+
+8. **Maximum number of envelopes stored in Log Cache per source** : 로그 캐시에 저장 된 최대 envelopes수를 조정할 수 있습니다. 기본적으로 로그 캐시는 100,000개의 envelopes를 유지합니다.
+
+9. **Usage Service cutoff age** : Usage Service는 365일후에 세분화 된 데이터를 삭제합니다.
+
+
+
+##### 모든 설정 입력 후 Save를 클릭합니다.
+
+- ### **(선택)Metric Registrar**
+
+![](metricregistrar.png)
+
+Metric Registrar를 사용하면 구조화된 로그를 메트릭으로 변환할 수 있습니다. 또한 메트릭 엔드포인트를 스크랩하고 메트릭을 Loggregator로 전달합니다. 
+
+1. **Enable Metric Registrar** : 기본적으로 비활성화 되어있습니다.
+
+2. **Endpoint scraping interval** : 스크래핑 간격은 Metric Registrar가 사용자 지정 메트릭 끝점을 폴링하는 빈도를 정의합니다. 기본값은 35초입니다.
+
+3. **Blocked tags** : 기본적으로 다음 태그는 해당 태그를 사용하고 의존하는 앱 메트릭과 같은 다른 제품과의 간섭을 방지하기 위해 차단됩니다.
+   
+   - `deployment`
+   - `job`
+   - `index`
+   - `id`
+
+
+
+##### 모든 설정 입력 후 Save를 클릭합니다.
+
+- ### **Errands**
+
+![](errand01.png)
+
+| 항목                                     | 기능                                                                                 |
+| -------------------------------------- | ---------------------------------------------------------------------------------- |
+| **Smoke Test Errand**                  | 배포 환경에서 앱을 배포, 스케일 그리고 삭제할 수 있는지 또한 org, space를 구성할 수 있는지 확인합니다.                   |
+| **Usage Service Errand**               | Apps Manager가 종속된 Usage Service 앱을 배포합니다.                                          |
+| **Apps Manager Errand**                | 초기 Apps Manager 대시보드를 배포합니다. Apps Manager를 구축한 후에는 Off 로 설정합니다.                    |
+| **Notifications Errand**               | 플랫폼 사용자에게 TAS 관련 이메일을 보내기 위한 API를 배포합니다.                                           |
+| **Notifications UI Errand**            | 사용자가 알림 구독을 관리할 수 있는 대시보드를 배포합니다.                                                  |
+| **App Autoscaler Errand**              | App Autoscaler 앱을 배포하므로 앱의 사용량 로드 변화에 따라 앱이 자동으로 확장되도록 구성할 수 있습니다.                 |
+| **App Autoscaler Smoke Test Errand**   | AppAutoscaler에 대해 Smoke test를 실행합니다.                                               |
+| **NFS Broker Errand**                  | NFS Volume Services for TAS를 지원하는 NFS Broker 앱을 배포합니다.                             |
+| **Metric Registrar Smoke Test Errand** | Metric Registrar가 앱에서 내보내는 사용자 지정 메트릭에 액세스하여 이를 Loggregator 메트릭으로 변환할 수 있는지 확인합니다. |
+| **SMB Broker Application Errand**      | VM용 SMB Volume Services for TAS를 지원하는 SMB Broker 앱을 배포합니다.                         |
+| **Rotate CC Database Key**             | Cloud Controller 데이터베이스의 중요한 데이터를 현재 지정된 기본 키로 변환합니다.                              |
+
+
+
+##### 모든 설정 입력 후 Save를 클릭합니다.
+
+- ### **Resource Config**
+
+![](resourceconfig01.png)
+
+![](resourceconfig02.png)
+
+구성 환경에 맞게 Resource Config를 설정합니다. (MySQL Server는 홀수 1, 3로 설정합니다.)
+
+1. 외부 S3 호환 파일 저장소를 사용하도록 TAS를 구성한 경우 **File Storage** 필드 에 INSTANCES를`0` 설정합니다.
+
+2. UAA, 시스템 및 CredHub 데이터베이스를 구성할 때 **External** 선택한 경우 다음 필드를 편집합니다.
+   
+   - MySQL Proxy : INSTANCES `0` 을 설정합니다.
+   - MySQL Server : INSTANCES `0` 을 설정합니다.
+   - MySQL Monitor : INSTANCES `0` 을 설정합니다.
+
+3. TCP 라우팅을 비활성화한 경우 TCP Router INSTANCES `0` 을 설정합니다.
+
+4. HAProxy를 사용하지 않는 경우 HAProxy INSTANCES `0` 을 설정합니다.
+
+
+
+##### 모든 설정 입력 후 Save를 클릭합니다.
+
+---
 
 
